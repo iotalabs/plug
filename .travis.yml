@@ -1,0 +1,8 @@
+language: go
+
+install:
+    - go get github.com/didip/tollbooth
+    - go get github.com/mitchellh/mapstructure
+
+go:
+    1.6
