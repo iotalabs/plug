@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/iotalabs/pioneer"
-	"github.com/iotalabs/pioneer/plug/router/tree"
+	"github.com/iotalabs/plug/router/tree"
 )
 
 const (

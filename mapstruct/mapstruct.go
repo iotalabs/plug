@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/iotalabs/pioneer"
-	"github.com/iotalabs/pioneer/plug"
+	"github.com/iotalabs/plug"
 	"github.com/mitchellh/mapstructure"
 	"golang.org/x/net/context"
 )
