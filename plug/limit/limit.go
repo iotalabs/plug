@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/iotalabs/pioneer"
-	"github.com/iotalabs/pioneer/utils"
+	"github.com/iotalabs/pioneer/util"
 	"github.com/didip/tollbooth"
 	"github.com/didip/tollbooth/config"
 	"github.com/didip/tollbooth/errors"
@@ -22,7 +22,7 @@ type limiter struct {
 }
 
 func errHandleFn(w http.ResponseWriter, err *errors.HTTPError) {
-	utils.JSON.Code(err.StatusCode).Dump(w, map[string]interface{}{
+	util.JSON.Code(err.StatusCode).Dump(w, map[string]interface{}{
 		"status": "error",
 		"msg":    err.Message,
 	})

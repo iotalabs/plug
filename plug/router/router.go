@@ -7,7 +7,7 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/iotalabs/pioneer"
-	"github.com/iotalabs/pioneer/plugs/router/tree"
+	"github.com/iotalabs/pioneer/plug/router/tree"
 )
 
 const (
@@ -172,10 +172,10 @@ func (r *Router) SubRouter(prefix string) *SubRouter {
 }
 
 func (r *Router) subRouter(pre *SubRouter, prefix string) *SubRouter {
-	var plugs []pioneer.Plugger
+	var plug []pioneer.Plugger
 	if pre != nil {
 		prefix = filepath.Join(pre.prefix, prefix)
-		plugs = r.subs[pre.prefix].Plugs()
+		plug = r.subs[pre.prefix].Plugs()
 	}
 
 	sub := &SubRouter{
@@ -183,6 +183,6 @@ func (r *Router) subRouter(pre *SubRouter, prefix string) *SubRouter {
 		father: r,
 	}
 
-	r.subs[sub.prefix] = pioneer.NewPipeline().Plug(plugs...)
+	r.subs[sub.prefix] = pioneer.NewPipeline().Plug(plug...)
 	return sub
 }

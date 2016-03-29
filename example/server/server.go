@@ -8,17 +8,17 @@ import (
 	"golang.org/x/net/context"
 
 	"github.com/iotalabs/pioneer"
-	"github.com/iotalabs/pioneer/plugs/body"
-	"github.com/iotalabs/pioneer/plugs/close"
-	"github.com/iotalabs/pioneer/plugs/limit"
-	"github.com/iotalabs/pioneer/plugs/router"
-	"github.com/iotalabs/pioneer/plugs/static"
-	"github.com/iotalabs/pioneer/utils"
+	"github.com/iotalabs/pioneer/plug/body"
+	"github.com/iotalabs/pioneer/plug/close"
+	"github.com/iotalabs/pioneer/plug/limit"
+	"github.com/iotalabs/pioneer/plug/router"
+	"github.com/iotalabs/pioneer/plug/static"
+	"github.com/iotalabs/pioneer/util"
 )
 
 func helloRoute(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	params, _ := router.FetchParams(ctx)
-	utils.DumpJSON(
+	util.DumpJSON(
 		w,
 		map[string]interface{}{
 			"status": "success",
@@ -29,7 +29,7 @@ func helloRoute(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 
 func slowRoute(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	time.Sleep(10 * time.Second)
-	utils.DumpJSON(w, `Im slow!`)
+	util.DumpJSON(w, `Im slow!`)
 }
 
 func newRouter() *router.Router {

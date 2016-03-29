@@ -6,36 +6,36 @@ import (
 	"net/http"
 
 	"github.com/iotalabs/pioneer"
-	"github.com/iotalabs/pioneer/plugs"
+	"github.com/iotalabs/pioneer/plug"
 	"github.com/mitchellh/mapstructure"
 	"golang.org/x/net/context"
 )
 
 // New create new plugger
-func New(onError plugs.OnErrorFn) pioneer.Plugger {
-	p := &plug{
+func New(onError plug.OnErrorFn) pioneer.Plugger {
+	p := &mapstruct{
 		onError: onError,
 	}
 	if p.onError == nil {
-		p.onError = plugs.DefaultOnErrorFn
+		p.onError = plug.DefaultOnErrorFn
 	}
 
 	return p
 }
 
-type plug struct {
+type mapstruct struct {
 	next    pioneer.Handler
-	onError plugs.OnErrorFn
+	onError plug.OnErrorFn
 }
 
 var ctxKey uint8
 
-func (p *plug) Plug(h pioneer.Handler) pioneer.Handler {
+func (p *mapstruct) Plug(h pioneer.Handler) pioneer.Handler {
 	p.next = h
 	return p
 }
 
-func (p *plug) ServeHTTP(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+func (p *mapstruct) ServeHTTP(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	payload := map[string]interface{}{}
 	err := json.NewDecoder(r.Body).Decode(&payload)
 	if err != nil && p.onError != nil {

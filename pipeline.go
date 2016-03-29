@@ -8,13 +8,13 @@ import (
 
 type Pipeline struct {
 	handler Handler
-	plugs   []Plugger
+	plug   []Plugger
 }
 
 func (p *Pipeline) HTTPHandler() http.Handler {
 	var h Handler = p.handler
-	for i := len(p.plugs) - 1; i >= 0; i-- {
-		h = p.plugs[i].Plug(h)
+	for i := len(p.plug) - 1; i >= 0; i-- {
+		h = p.plug[i].Plug(h)
 	}
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
@@ -24,19 +24,19 @@ func (p *Pipeline) HTTPHandler() http.Handler {
 
 func (p *Pipeline) Handler() Handler {
 	var h Handler = p.handler
-	for i := len(p.plugs) - 1; i >= 0; i-- {
-		h = p.plugs[i].Plug(h)
+	for i := len(p.plug) - 1; i >= 0; i-- {
+		h = p.plug[i].Plug(h)
 	}
 	return h
 }
 
-func (p *Pipeline) Plug(plugs ...Plugger) *Pipeline {
-	p.plugs = append(p.plugs, plugs...)
+func (p *Pipeline) Plug(plug ...Plugger) *Pipeline {
+	p.plug = append(p.plug, plug...)
 	return p
 }
 
 func (p *Pipeline) Plugs() []Plugger {
-	return p.plugs
+	return p.plug
 }
 
 func (p *Pipeline) SetHandler(h Handler) *Pipeline {

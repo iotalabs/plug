@@ -1,4 +1,4 @@
-package plugs
+package plug
 
 import (
 	"log"

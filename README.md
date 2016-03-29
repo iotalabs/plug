@@ -2,7 +2,7 @@
 JSON Restful API with context.Context in mind.
 
 ## Plug structure
-![Image of Plug](./docs/arch.png)
+![Image of Plug](./doc/arch.png)
 
 ### TODO
 - [ ] add realtime plug (like phoenix channel)
