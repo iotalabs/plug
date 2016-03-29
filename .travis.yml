@@ -4,8 +4,10 @@ go:
   - 1.6
 
 install:
+  - go get golang.org/x/net/context
   - go get github.com/didip/tollbooth
   - go get github.com/mitchellh/mapstructure
+  - go get github.com/iotalabs/pioneer
 
 script:
   - go test -v ./...
