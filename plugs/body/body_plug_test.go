@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/net/context"
 )
@@ -19,7 +19,7 @@ type testPayload struct {
 
 type testPlug struct {
 	t      *testing.T
-	next   xrest.Handler
+	next   pioneer.Handler
 	origin testPayload
 }
 
@@ -35,13 +35,13 @@ func (tp *testPlug) ServeHTTP(ctx context.Context, w http.ResponseWriter, r *htt
 	tp.next.ServeHTTP(ctx, w, r)
 }
 
-func (tp *testPlug) Plug(h xrest.Handler) xrest.Handler {
+func (tp *testPlug) Plug(h pioneer.Handler) pioneer.Handler {
 	tp.next = h
 	return tp
 }
 
 func TestJSONDecodeIntegration(t *testing.T) {
-	pipe := xrest.NewPipeline()
+	pipe := pioneer.NewPipeline()
 	origin := testPayload{
 		Name: "alex",
 		Age:  27,

@@ -6,8 +6,8 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/AlexanderChen1989/xrest"
-	"github.com/AlexanderChen1989/xrest/plugs/router/tree"
+	"github.com/iotalabs/pioneer"
+	"github.com/iotalabs/pioneer/plugs/router/tree"
 )
 
 const (
@@ -21,31 +21,31 @@ const (
 
 type Router struct {
 	trees map[string]*tree.Node
-	subs  map[string]*xrest.Pipeline
+	subs  map[string]*pioneer.Pipeline
 
 	RedirectTrailingSlash  bool
 	RedirectFixedPath      bool
 	HandleMethodNotAllowed bool
 
-	MethodNotAllowed xrest.Handler
-	NotFound         xrest.Handler
+	MethodNotAllowed pioneer.Handler
+	NotFound         pioneer.Handler
 }
 
 func New() *Router {
 	return &Router{
 		trees: map[string]*tree.Node{},
-		subs:  map[string]*xrest.Pipeline{},
+		subs:  map[string]*pioneer.Pipeline{},
 		RedirectTrailingSlash:  true,
 		RedirectFixedPath:      true,
 		HandleMethodNotAllowed: true,
 	}
 }
 
-func (r *Router) Plug(_ xrest.Handler) xrest.Handler {
+func (r *Router) Plug(_ pioneer.Handler) pioneer.Handler {
 	return r
 }
 
-func (r *Router) plug(sub *SubRouter, plug ...xrest.Plugger) {
+func (r *Router) plug(sub *SubRouter, plug ...pioneer.Plugger) {
 	r.subs[sub.prefix].Plug(plug...)
 }
 
@@ -129,7 +129,7 @@ func (r *Router) ServeHTTP(ctx context.Context, w http.ResponseWriter, req *http
 	}
 }
 
-func (r *Router) handle(sub *SubRouter, method string, path string, h xrest.Handler) {
+func (r *Router) handle(sub *SubRouter, method string, path string, h pioneer.Handler) {
 	if sub != nil {
 		path = filepath.Join(sub.prefix, path)
 		pipe := r.subs[sub.prefix]
@@ -143,27 +143,27 @@ func (r *Router) handle(sub *SubRouter, method string, path string, h xrest.Hand
 	root.AddRoute(path, h)
 }
 
-func (r *Router) Get(path string, h xrest.Handler) {
+func (r *Router) Get(path string, h pioneer.Handler) {
 	r.handle(nil, GET, path, h)
 }
 
-func (r *Router) Post(path string, h xrest.Handler) {
+func (r *Router) Post(path string, h pioneer.Handler) {
 	r.handle(nil, POST, path, h)
 }
 
-func (r *Router) Put(path string, h xrest.Handler) {
+func (r *Router) Put(path string, h pioneer.Handler) {
 	r.handle(nil, PUT, path, h)
 }
 
-func (r *Router) Patch(path string, h xrest.Handler) {
+func (r *Router) Patch(path string, h pioneer.Handler) {
 	r.handle(nil, PATCH, path, h)
 }
 
-func (r *Router) Options(path string, h xrest.Handler) {
+func (r *Router) Options(path string, h pioneer.Handler) {
 	r.handle(nil, OPTIONS, path, h)
 }
 
-func (r *Router) Delete(path string, h xrest.Handler) {
+func (r *Router) Delete(path string, h pioneer.Handler) {
 	r.handle(nil, DELETE, path, h)
 }
 
@@ -172,7 +172,7 @@ func (r *Router) SubRouter(prefix string) *SubRouter {
 }
 
 func (r *Router) subRouter(pre *SubRouter, prefix string) *SubRouter {
-	var plugs []xrest.Plugger
+	var plugs []pioneer.Plugger
 	if pre != nil {
 		prefix = filepath.Join(pre.prefix, prefix)
 		plugs = r.subs[pre.prefix].Plugs()
@@ -183,6 +183,6 @@ func (r *Router) subRouter(pre *SubRouter, prefix string) *SubRouter {
 		father: r,
 	}
 
-	r.subs[sub.prefix] = xrest.NewPipeline().Plug(plugs...)
+	r.subs[sub.prefix] = pioneer.NewPipeline().Plug(plugs...)
 	return sub
 }

@@ -6,14 +6,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestLimiter(t *testing.T) {
 	limiter := New(1, time.Second)
 
-	pipe := xrest.NewPipeline()
+	pipe := pioneer.NewPipeline()
 
 	pipe.Plug(limiter)
 

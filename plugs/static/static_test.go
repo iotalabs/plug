@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -43,10 +43,10 @@ func TestStatic(t *testing.T) {
 
 	for i := range testCases {
 		c := testCases[i]
-		pipe := xrest.NewPipeline()
+		pipe := pioneer.NewPipeline()
 		pipe.Plug(s)
 		pipe.Plug(
-			xrest.HandlerFunc(
+			pioneer.HandlerFunc(
 				func(ctx context.Context, res http.ResponseWriter, req *http.Request) {
 					if c.exists {
 						t.Error("should not be here\n")

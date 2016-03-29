@@ -7,15 +7,15 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestPlug(t *testing.T) {
 	p := New(nil)
-	pipe := xrest.NewPipeline().Plug(p)
+	pipe := pioneer.NewPipeline().Plug(p)
 	pipe.SetHandler(
-		xrest.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+		pioneer.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 			var d struct {
 				Name string
 				Age  int

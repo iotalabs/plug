@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 )
 
 func min(a, b int) int {
@@ -48,7 +48,7 @@ type Node struct {
 	maxParams uint8
 	indices   string
 	children  []*Node
-	handle    xrest.Handler
+	handle    pioneer.Handler
 	priority  uint32
 }
 
@@ -80,7 +80,7 @@ func (n *Node) incrementChildPrio(pos int) int {
 
 // AddRoute adds a node with the given handle to the path.
 // Not concurrency-safe!
-func (n *Node) AddRoute(path string, handle xrest.Handler) {
+func (n *Node) AddRoute(path string, handle pioneer.Handler) {
 	fullPath := path
 	n.priority++
 	numParams := countParams(path)
@@ -202,7 +202,7 @@ func (n *Node) AddRoute(path string, handle xrest.Handler) {
 	}
 }
 
-func (n *Node) insertChild(numParams uint8, path, fullPath string, handle xrest.Handler) {
+func (n *Node) insertChild(numParams uint8, path, fullPath string, handle pioneer.Handler) {
 	var offset int // already handled bytes of the path
 
 	// find prefix until first wildcard (beginning with ':'' or '*'')
@@ -320,7 +320,7 @@ func (n *Node) insertChild(numParams uint8, path, fullPath string, handle xrest.
 // If no handle can be found, a TSR (trailing slash redirect) recommendation is
 // made if a handle exists with an extra (without the) trailing slash for the
 // given path.
-func (n *Node) GetValue(path string) (handle xrest.Handler, p Params, tsr bool) {
+func (n *Node) GetValue(path string) (handle pioneer.Handler, p Params, tsr bool) {
 walk: // Outer loop for walking the tree
 	for {
 		if len(path) > len(n.path) {

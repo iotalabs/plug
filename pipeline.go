@@ -1,4 +1,4 @@
-package xrest
+package pioneer
 
 import (
 	"net/http"

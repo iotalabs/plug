@@ -7,13 +7,13 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/AlexanderChen1989/xrest"
-	"github.com/AlexanderChen1989/xrest/plugs/body"
-	"github.com/AlexanderChen1989/xrest/plugs/close"
-	"github.com/AlexanderChen1989/xrest/plugs/limit"
-	"github.com/AlexanderChen1989/xrest/plugs/router"
-	"github.com/AlexanderChen1989/xrest/plugs/static"
-	"github.com/AlexanderChen1989/xrest/utils"
+	"github.com/iotalabs/pioneer"
+	"github.com/iotalabs/pioneer/plugs/body"
+	"github.com/iotalabs/pioneer/plugs/close"
+	"github.com/iotalabs/pioneer/plugs/limit"
+	"github.com/iotalabs/pioneer/plugs/router"
+	"github.com/iotalabs/pioneer/plugs/static"
+	"github.com/iotalabs/pioneer/utils"
 )
 
 func helloRoute(ctx context.Context, w http.ResponseWriter, r *http.Request) {
@@ -34,14 +34,14 @@ func slowRoute(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 
 func newRouter() *router.Router {
 	r := router.New()
-	r.Get("/api/hello/:name", xrest.HandlerFunc(helloRoute))
-	r.Post("/api/hello/:name", xrest.HandlerFunc(helloRoute))
-	r.Get("/api/slow", xrest.HandlerFunc(slowRoute))
+	r.Get("/api/hello/:name", pioneer.HandlerFunc(helloRoute))
+	r.Post("/api/hello/:name", pioneer.HandlerFunc(helloRoute))
+	r.Get("/api/slow", pioneer.HandlerFunc(slowRoute))
 	return r
 }
 
 func main() {
-	p := xrest.NewPipeline()
+	p := pioneer.NewPipeline()
 
 	p.Plug(limit.New(1, time.Second))
 	p.Plug(close.New(func(r *http.Request) {

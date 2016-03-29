@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"golang.org/x/net/context"
 )
 
 func main() {
-	p := xrest.NewPipeline()
+	p := pioneer.NewPipeline()
 
-	p.Plug(xrest.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	p.Plug(pioneer.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 		// fmt.Println("Hello")
 	}))
 

@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 
 	"golang.org/x/net/context"
 )
@@ -18,7 +18,7 @@ func init() {
 
 type body struct {
 	onError func(r *http.Request, err error)
-	next    xrest.Handler
+	next    pioneer.Handler
 }
 
 type readCloser struct {
@@ -32,7 +32,7 @@ func newBody(onError func(r *http.Request, err error)) *body {
 }
 
 // New create new body plug
-func New(onError func(r *http.Request, err error)) xrest.Plugger {
+func New(onError func(r *http.Request, err error)) pioneer.Plugger {
 	return newBody(onError)
 }
 
@@ -58,7 +58,7 @@ func FetchBody(ctx context.Context) ([]byte, bool) {
 	return []byte(body), ok
 }
 
-func (bp *body) Plug(h xrest.Handler) xrest.Handler {
+func (bp *body) Plug(h pioneer.Handler) pioneer.Handler {
 	bp.next = h
 	return bp
 }

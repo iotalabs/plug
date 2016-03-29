@@ -5,14 +5,14 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/AlexanderChen1989/xrest"
-	"github.com/AlexanderChen1989/xrest/plugs"
+	"github.com/iotalabs/pioneer"
+	"github.com/iotalabs/pioneer/plugs"
 	"github.com/mitchellh/mapstructure"
 	"golang.org/x/net/context"
 )
 
 // New create new plugger
-func New(onError plugs.OnErrorFn) xrest.Plugger {
+func New(onError plugs.OnErrorFn) pioneer.Plugger {
 	p := &plug{
 		onError: onError,
 	}
@@ -24,13 +24,13 @@ func New(onError plugs.OnErrorFn) xrest.Plugger {
 }
 
 type plug struct {
-	next    xrest.Handler
+	next    pioneer.Handler
 	onError plugs.OnErrorFn
 }
 
 var ctxKey uint8
 
-func (p *plug) Plug(h xrest.Handler) xrest.Handler {
+func (p *plug) Plug(h pioneer.Handler) pioneer.Handler {
 	p.next = h
 	return p
 }

@@ -5,27 +5,27 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 )
 
 // Closer client connection close plug
 type closer struct {
-	next    xrest.Handler
+	next    pioneer.Handler
 	onClose func(r *http.Request)
 }
 
 // New create closer plug, optional pass in a onClose func
-func New(onClose func(r *http.Request)) xrest.Plugger {
+func New(onClose func(r *http.Request)) pioneer.Plugger {
 	return &closer{onClose: onClose}
 }
 
-// Plug implements xrest.Plugger interface
-func (c *closer) Plug(h xrest.Handler) xrest.Handler {
+// Plug implements pioneer.Plugger interface
+func (c *closer) Plug(h pioneer.Handler) pioneer.Handler {
 	c.next = h
 	return c
 }
 
-// ServeHTTP implements xrest.Handler interface
+// ServeHTTP implements pioneer.Handler interface
 func (c *closer) ServeHTTP(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	// Cancel the context if the client closes the connection
 	if cn, ok := w.(http.CloseNotifier); ok {

@@ -6,20 +6,20 @@ import (
 
 	"golang.org/x/net/context"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"github.com/stretchr/testify/assert"
 )
 
 type testPlug struct {
 	name string
-	next xrest.Handler
+	next pioneer.Handler
 }
 
 func newTestPlug(name string) *testPlug {
 	return &testPlug{name: name}
 }
 
-func (plug *testPlug) Plug(h xrest.Handler) xrest.Handler {
+func (plug *testPlug) Plug(h pioneer.Handler) pioneer.Handler {
 	plug.next = h
 	return plug
 }
@@ -55,17 +55,17 @@ func TestRouter(t *testing.T) {
 		noauth.Plug(newTestPlug(val))
 	}
 
-	auth.Get("/files", xrest.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	auth.Get("/files", pioneer.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 		assert.EqualValues(t, authVals, ctx.Value(&ctxTestPlug))
 	}))
-	noauth.Post("/login", xrest.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	noauth.Post("/login", pioneer.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 		assert.EqualValues(t, noauthVals, ctx.Value(&ctxTestPlug))
 	}))
 
 	authReq, _ := http.NewRequest("GET", "/api/auth/files", nil)
 	noauthReq, _ := http.NewRequest("POST", "/api/noauth/login", nil)
 
-	pipe := xrest.NewPipeline().Plug(router)
+	pipe := pioneer.NewPipeline().Plug(router)
 
 	pipe.HTTPHandler().ServeHTTP(nil, authReq)
 	pipe.HTTPHandler().ServeHTTP(nil, noauthReq)

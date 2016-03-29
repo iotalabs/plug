@@ -5,7 +5,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"golang.org/x/net/context"
 )
 
@@ -15,7 +15,7 @@ type static struct {
 
 	fileHandler http.Handler
 
-	next xrest.Handler
+	next pioneer.Handler
 }
 
 // Dir set real directory to serve static files from
@@ -36,7 +36,7 @@ func Prefix(prefix string) func(*static) {
 // Default:
 //  dir: ./static
 //  prefix: /public
-func New(setups ...func(*static)) xrest.Plugger {
+func New(setups ...func(*static)) pioneer.Plugger {
 	s := &static{
 		dir:    "./static",
 		prefix: "/public",
@@ -56,7 +56,7 @@ func New(setups ...func(*static)) xrest.Plugger {
 	return s
 }
 
-// ServeHTTP implements xrest.Handler
+// ServeHTTP implements pioneer.Handler
 func (s *static) ServeHTTP(ctx context.Context, res http.ResponseWriter, req *http.Request) {
 	if strings.HasPrefix(req.URL.Path, s.prefix) {
 		s.fileHandler.ServeHTTP(res, req)
@@ -65,8 +65,8 @@ func (s *static) ServeHTTP(ctx context.Context, res http.ResponseWriter, req *ht
 	s.next.ServeHTTP(ctx, res, req)
 }
 
-// Plug implements xrest.Plugger
-func (s *static) Plug(h xrest.Handler) xrest.Handler {
+// Plug implements pioneer.Plugger
+func (s *static) Plug(h pioneer.Handler) pioneer.Handler {
 	s.next = h
 	return s
 }

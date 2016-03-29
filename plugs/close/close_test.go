@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"golang.org/x/net/context"
 )
 
@@ -14,9 +14,9 @@ func TestClose(t *testing.T) {
 	close := New(nil)
 
 	dur := 2 * time.Second
-	pipe := xrest.NewPipeline()
+	pipe := pioneer.NewPipeline()
 	pipe.Plug(close)
-	pipe.Plug(xrest.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
+	pipe.Plug(pioneer.HandlerFunc(func(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 		select {
 		case <-ctx.Done():
 		case <-time.After(dur + time.Second):

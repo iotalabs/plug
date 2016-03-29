@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/AlexanderChen1989/xrest"
+	"github.com/iotalabs/pioneer"
 	"golang.org/x/net/context"
 )
 
@@ -28,8 +28,8 @@ func printChildren(n *Node, prefix string) {
 // Used as a workaround since we can't compare functions or their adresses
 var fakeHandlerValue string
 
-func fakeHandler(val string) xrest.Handler {
-	return xrest.HandlerFunc(func(context.Context, http.ResponseWriter, *http.Request) {
+func fakeHandler(val string) pioneer.Handler {
+	return pioneer.HandlerFunc(func(context.Context, http.ResponseWriter, *http.Request) {
 		fakeHandlerValue = val
 	})
 }

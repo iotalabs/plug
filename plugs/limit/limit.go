@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AlexanderChen1989/xrest"
-	"github.com/AlexanderChen1989/xrest/utils"
+	"github.com/iotalabs/pioneer"
+	"github.com/iotalabs/pioneer/utils"
 	"github.com/didip/tollbooth"
 	"github.com/didip/tollbooth/config"
 	"github.com/didip/tollbooth/errors"
@@ -18,7 +18,7 @@ type limiter struct {
 
 	ErrHandleFn func(http.ResponseWriter, *errors.HTTPError)
 
-	next xrest.Handler
+	next pioneer.Handler
 }
 
 func errHandleFn(w http.ResponseWriter, err *errors.HTTPError) {
@@ -29,7 +29,7 @@ func errHandleFn(w http.ResponseWriter, err *errors.HTTPError) {
 }
 
 // New create a new request rate limiter plug, max requests in ttl time duration
-func New(max int64, ttl time.Duration) xrest.Plugger {
+func New(max int64, ttl time.Duration) pioneer.Plugger {
 	return &limiter{
 		limiter:     tollbooth.NewLimiter(max, ttl),
 		ErrHandleFn: errHandleFn,
@@ -37,7 +37,7 @@ func New(max int64, ttl time.Duration) xrest.Plugger {
 }
 
 // NewLimiter create a new request rate limiter with conf and error handle function
-func NewLimiter(conf *config.Limiter, handlefn func(http.ResponseWriter, *errors.HTTPError)) xrest.Plugger {
+func NewLimiter(conf *config.Limiter, handlefn func(http.ResponseWriter, *errors.HTTPError)) pioneer.Plugger {
 	return &limiter{
 		limiter:     conf,
 		ErrHandleFn: handlefn,
@@ -57,7 +57,7 @@ func (limiter *limiter) ServeHTTP(ctx context.Context, w http.ResponseWriter, r 
 }
 
 // Plug implement Plugger.Plug
-func (limiter *limiter) Plug(h xrest.Handler) xrest.Handler {
+func (limiter *limiter) Plug(h pioneer.Handler) pioneer.Handler {
 	limiter.next = h
 	return limiter
 }
